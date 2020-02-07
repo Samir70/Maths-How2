@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <meta charset="UTF-8">
+    <title>GCSE trigonometry 01 - labelling sides</title>
+</head>
+
+<body>
+    <h1>Trigonometry -- labeling the sides of the triangle</h1>
+    <div id="description">
+        <p>Labeling a triangle is a basic but important part of learning trigonometry.
+            <br> This page will show you multiple choice questions so you can practise this skill.</p>
+        <div v-if="showInfo" id="quickDefs">
+            <div v-if="showHyp">
+                <p>A right angled triangle always has a hypotenuse.
+                    <br> It is the longest side and it is opposite the biggest angle (the right angle).
+                </p>
+                <img src="triangles/NoAngleHyp.png">
+                <br>
+                <button v-on:click="showHyp=!showHyp">Tell me about the opposite and adjacent</button>
+            </div>
+            <div v-if="!showHyp">
+                <p>To have an opposite or an adjacent, a right angled triangle needs to have an angle
+                    to talk about.
+                </p>
+                <p>In the triangle below, the arrow points at the side which does not touch the angle. 
+                    It is opposite the angle, so we call it the opposite</p>
+                <img src="triangles/Opp1.png">
+                <p>While, in the next triangle, the arrow points at the side which is next to the angle (but is not the longest side). 
+                    <br>Because it is next to the angle, we call it the adjacent.
+                </p>
+                <img src="triangles/Adj1.png">
+                <br>
+                <button v-on:click="showHyp=!showHyp">Tell me about the hypotenuse</button>
+            </div>
+        </div>
+        <br>
+        <button v-on:click='showInfo = !showInfo'>
+            {{showInfo ? hideLesson : showLesson}}
+        </button>
+    </div>
+    <script>
+        var quickTeach = new Vue({
+            el: "#description",
+            data: {
+                showLesson: "Show a quick lesson",
+                hideLesson: "Hide the lesson",
+                showInfo: false,
+                showHyp: true
+            }
+        })
+    </script>
+
+    <div id="question">
+        <h2 v-if="!showAnswer">At which side does the arrow point?</h2>
+        <div v-if="showAnswer">
+            <h2>{{answerMessage}}</h2>
+            <button v-on:click="nextQ">Next question</button>
+        </div>
+        <img v-bind:src="qData.triPic" alt="Triangle with arrow pointing at a side" >
+        <div v-if="!showAnswer">
+            <button v-for="b in buttonOptions" v-on:click="checkAnswer(b, qData.answer)">{{b}}</button>
+        </div>
+    </div>
+    <script>
+        const [ADJ, OPP, HYP] = ['adjacent', 'opposite', 'hypotenuse']
+        const triangleQs = [
+            { triPic: "triangles/AngleRAdj.png", answer: ADJ },
+            { triPic: "triangles/AngleROpp.png", answer: OPP },
+            { triPic: "triangles/AngleRHyp.png", answer: HYP },
+            { triPic: "triangles/AngleTopAdj.png", answer: ADJ },
+            { triPic: "triangles/AngleTopOpp.png", answer: OPP },
+            { triPic: "triangles/AngleTopHyp.png", answer: HYP },
+            { triPic: "triangles/Adj1.png", answer: ADJ },
+            { triPic: "triangles/Opp1.png", answer: OPP },
+            { triPic: "triangles/NoAngleHyp.png", answer: HYP }
+        ];
+        var qList = triangleQs.map((x, i) => i);
+        const askQ = new Vue({
+            el: "#question",
+            data: {
+                qData: triangleQs[0],
+                buttonOptions: [ADJ, OPP, HYP],
+                showAnswer: false,
+                answerMessage: 'default answer message -- should not be shown'
+            },
+            methods: {
+                checkAnswer: function (userAns, qAns) {
+                    this.answerMessage = userAns === qAns ?
+                        "Correct! That is the " + qAns :
+                        "Wrong! That is the " + qAns;
+                    this.showAnswer = true;
+                },
+                nextQ: function () {
+                    if (qList.length === 0) {
+                        qList = triangleQs.map((x, i) => i);
+                    }
+                    var qNum = qList[Math.floor(Math.random() * qList.length)];
+                    qList = qList.filter(x => x !== qNum);
+                    this.qData = triangleQs[qNum];
+                    this.showAnswer = false;
+                }
+            }
+        })
+    </script>
+</body>
+<style>
+    body {
+        text-align: center;
+    }
+
+    button {
+        background: lightblue;
+        border-radius: 10%;
+    }
+
+    button:hover {
+        background: lightsalmon;
+    }
+
+    #question {
+        border: 2px solid lightblue;
+        width: auto;
+        margin: 10px;
+        padding: 5px;
+    }
+
+    #quickDefs {
+        background: lightgreen;
+        margin: 10px;
+        padding: 5px;
+    }
+</style>
+
+</html>

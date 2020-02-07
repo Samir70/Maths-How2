@@ -23,14 +23,17 @@
                 <button v-on:click="showHyp=!showHyp">Tell me about the opposite and adjacent</button>
             </div>
             <div v-if="!showHyp">
-                <p>To have an opposite or an adjacent, a right angled triangle needs to have an angle
-                    to talk about.
+                <p>Before we can talk about an opposite or an adjacent in a right angled triangle, 
+                    we need to pick an angle to talk about. 
+                    <br>If we know the size of the angle, we can refer to it by size. 
+                    <br>
+                    We don't know the size of the angles in the triangle below, so I have chosen an angle by drawing an arc. 
                 </p>
-                <p>In the triangle below, the arrow points at the side which does not touch the angle. 
-                    It is opposite the angle, so we call it the opposite</p>
+                <p>The arrow points at the side which does not touch the angle. 
+                    This side is opposite the angle, so we call it the opposite</p>
                 <img src="triangles/Opp1.png">
                 <p>While, in the next triangle, the arrow points at the side which is next to the angle (but is not the longest side). 
-                    <br>Because it is next to the angle, we call it the adjacent.
+                    <br>Because it is next to the angle, we call this side the adjacent.
                 </p>
                 <img src="triangles/Adj1.png">
                 <br>
@@ -121,6 +124,9 @@
         margin: 0px 2px;
         font-size: 16px;
         padding: 2px 5px;
+    }
+    p {
+        font-size: 20px;
     }
 
     button:hover {

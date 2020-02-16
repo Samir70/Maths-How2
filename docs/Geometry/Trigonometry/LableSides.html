@@ -68,24 +68,13 @@
             <button v-for="b in buttonOptions" v-on:click="checkAnswer(b, qData.answer)">{{b}}</button>
         </div>
     </div>
+    <script src="triangleQs.js" >console.log(triangles2Lable)</script>
     <script>
-        const [ADJ, OPP, HYP] = ['adjacent', 'opposite', 'hypotenuse']
-        const triangleQs = [
-            { triPic: "triangles/AngleRAdj.png", answer: ADJ },
-            { triPic: "triangles/AngleROpp.png", answer: OPP },
-            { triPic: "triangles/AngleRHyp.png", answer: HYP },
-            { triPic: "triangles/AngleTopAdj.png", answer: ADJ },
-            { triPic: "triangles/AngleTopOpp.png", answer: OPP },
-            { triPic: "triangles/AngleTopHyp.png", answer: HYP },
-            { triPic: "triangles/Adj1.png", answer: ADJ },
-            { triPic: "triangles/Opp1.png", answer: OPP },
-            { triPic: "triangles/NoAngleHyp.png", answer: HYP }
-        ];
-        var qList = triangleQs.map((x, i) => i);
+        var qList = triangles2Lable.map((x, i) => i);
         const askQ = new Vue({
             el: "#question",
             data: {
-                qData: triangleQs[0],
+                qData: triangles2Lable[0],
                 buttonOptions: [ADJ, OPP, HYP],
                 showAnswer: false,
                 answerMessage: 'default answer message -- should not be shown'
@@ -99,11 +88,11 @@
                 },
                 nextQ: function () {
                     if (qList.length === 0) {
-                        qList = triangleQs.map((x, i) => i);
+                        qList = triangles2Lable.map((x, i) => i);
                     }
                     var qNum = qList[Math.floor(Math.random() * qList.length)];
                     qList = qList.filter(x => x !== qNum);
-                    this.qData = triangleQs[qNum];
+                    this.qData = triangles2Lable[qNum];
                     this.showAnswer = false;
                 }
             }

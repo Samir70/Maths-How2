@@ -1,8 +1,8 @@
 /*
 This component will show multiple choice questions.
 It requires 
--- an array of questions
--- the index of the first questions
+-- an array of questions (which the component will ask in random order)
+-- the index of the first question
 -- a boolean stating whether or not to show a picture (the default is false)
 Each question is an object requiring the following properties
 -- qText : a string with the text of a question
@@ -17,7 +17,11 @@ Each question is an object requiring the following properties
 */
 
 Vue.component('multi-choice', {
-    props: ['qList', 'firstq', 'showPic'],
+    props: {
+        qList : Array,
+        firstq : Number,
+        showPic : Boolean
+    },
     data: function () {
         return {
             showAnswer: false,

@@ -12,47 +12,17 @@
     <script src="MultiChoice.js"></script>
     <div id="mcqDiv">
         <multi-choice 
-            v-if="!showAnswer"
-            v-bind:q-data="mcq" 
-            v-on:answer-given="checkAnswer" >
+            v-bind:q-list="qArray"
+            v-bind:firstq="startQ"
+            v-bind:show-pic="true" >
         </multi-choice>
-        <div v-if="showAnswer">
-            <h2>{{answerMessage}}</h2>
-            <button v-on:click="nextQ">Next question</button>
-        </div>
-        <img v-bind:src="mcq.pic" v-bind:alt="mcq.alt4Pic" >
     </div>
     <script src="../docs/Geometry/Trigonometry/triangleQs.js"></script>
     <script>
+        var startQ = Math.floor(Math.random()*lableAOHqs.length)
         var mcqTest = new Vue({
             el: '#mcqDiv',
-            data: {
-                showAnswer: false,
-                answerMessage: 'Default answer. Should not be shown',
-                mcq: {
-                    qText: 'At which side does the arrow point?',
-                    pic: "../docs/Geometry/Trigonometry/triangles/AngleRAdj.png",
-                    alt4Pic: "Triangle with arrow pointing at a side",
-                    answer: ADJ, options: [ADJ, OPP, HYP]
-                }
-            },
-            methods: {
-                checkAnswer: function (userAns, qAns) {
-                    this.answerMessage = userAns === qAns ?
-                        "Correct! That is the " + qAns :
-                        "Wrong! That is the " + qAns;
-                    this.showAnswer = true;
-                },
-                nextQ: function () {
-                    if (qList.length === 0) {
-                        qList = triangles2Lable.map((x, i) => i);
-                    }
-                    var qNum = qList[Math.floor(Math.random() * qList.length)];
-                    qList = qList.filter(x => x !== qNum);
-                    this.qData = triangles2Lable[qNum];
-                    this.showAnswer = false;
-                }
-            }
+            data: { qArray: lableAOHqs, startQ }
         })
     </script>
 </body>

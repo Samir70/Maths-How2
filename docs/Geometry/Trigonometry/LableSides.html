@@ -67,44 +67,19 @@
     </script>
 
     <div id="question">
-        <h2 v-if="!showAnswer">At which side does the arrow point?</h2>
-        <div v-if="showAnswer">
-            <h2>{{answerMessage}}</h2>
-            <button v-on:click="nextQ">Next question</button>
-        </div>
-        <img v-bind:src="qData.triPic" alt="Triangle with arrow pointing at a side" >
-        <div v-if="!showAnswer">
-            <button v-for="b in buttonOptions" v-on:click="checkAnswer(b, qData.answer)">{{b}}</button>
-        </div>
+        <multi-choice 
+            v-bind:q-list="qArray"
+            v-bind:firstq="startQ"
+            v-bind:show-pic="true" >
+        </multi-choice>
     </div>
     <script src="triangleQs.js" ></script>
+    <script src="../../../Components/MultiChoice.js" ></script>
     <script>
-        var qList = triangles2Lable.map((x, i) => i);
+        var startQ = Math.floor(Math.random()*lableAOHqs.length)
         const askQ = new Vue({
             el: "#question",
-            data: {
-                qData: triangles2Lable[0],
-                buttonOptions: [ADJ, OPP, HYP],
-                showAnswer: false,
-                answerMessage: 'default answer message -- should not be shown'
-            },
-            methods: {
-                checkAnswer: function (userAns, qAns) {
-                    this.answerMessage = userAns === qAns ?
-                        "Correct! That is the " + qAns :
-                        "Wrong! That is the " + qAns;
-                    this.showAnswer = true;
-                },
-                nextQ: function () {
-                    if (qList.length === 0) {
-                        qList = triangles2Lable.map((x, i) => i);
-                    }
-                    var qNum = qList[Math.floor(Math.random() * qList.length)];
-                    qList = qList.filter(x => x !== qNum);
-                    this.qData = triangles2Lable[qNum];
-                    this.showAnswer = false;
-                }
-            }
+            data: { qArray: lableAOHqs, startQ }
         })
     </script>
     <footer id="footer-space">

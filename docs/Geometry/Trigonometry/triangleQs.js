@@ -1,15 +1,15 @@
 const [ADJ, OPP, HYP] = ['adjacent', 'opposite', 'hypotenuse'];
 
 const lableAOHqs = [
-    { pic: "../docs/Geometry/Trigonometry/triangles/AngleRAdj.png", answer: ADJ },
-    { pic: "../docs/Geometry/Trigonometry/triangles/AngleROpp.png", answer: OPP },
-    { pic: "../docs/Geometry/Trigonometry/triangles/AngleRHyp.png", answer: HYP },
-    { pic: "../docs/Geometry/Trigonometry/triangles/AngleTopAdj.png", answer: ADJ },
-    { pic: "../docs/Geometry/Trigonometry/triangles/AngleTopOpp.png", answer: OPP },
-    { pic: "../docs/Geometry/Trigonometry/triangles/AngleTopHyp.png", answer: HYP },
-    { pic: "../docs/Geometry/Trigonometry/triangles/Adj1.png", answer: ADJ },
-    { pic: "../docs/Geometry/Trigonometry/triangles/Opp1.png", answer: OPP },
-    { pic: "../docs/Geometry/Trigonometry/triangles/NoAngleHyp.png", answer: HYP }
+    { pic: "triangles/AngleRAdj.png", answer: ADJ },
+    { pic: "triangles/AngleROpp.png", answer: OPP },
+    { pic: "triangles/AngleRHyp.png", answer: HYP },
+    { pic: "triangles/AngleTopAdj.png", answer: ADJ },
+    { pic: "triangles/AngleTopOpp.png", answer: OPP },
+    { pic: "triangles/AngleTopHyp.png", answer: HYP },
+    { pic: "triangles/Adj1.png", answer: ADJ },
+    { pic: "triangles/Opp1.png", answer: OPP },
+    { pic: "triangles/NoAngleHyp.png", answer: HYP }
 ]
 
 lableAOHqs.forEach(q=>{

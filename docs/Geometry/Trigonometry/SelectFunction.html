@@ -46,7 +46,7 @@
             <p>See if you can work out the rest.<br>
                 For some questions you may have to swap the order of the sides in order to use SOH CAH TOA.
             </p>
-            <multi-choice 
+            <multi-choice class="question"
                 v-bind:q-list="qArray" 
                 v-bind:firstq="startQ" 
                 v-bind:show-pic="false"
@@ -78,7 +78,7 @@
         know which two sides the question asks you two to consider. In the below exercise, you can practise
         working out for yourself the name of those two sides.
     </p>
-    <div id="question">
+    <div id="question1" class="question">
         <p>Two sides are indicated in this triangle. One by showing its length,
              the other is the side you are asked for.</p>
         <multi-choice 
@@ -94,7 +94,7 @@
     <script>
         var startQ = Math.floor(Math.random() * indicatedSidesQs.length)
         const askQ = new Vue({
-            el: "#question",
+            el: "#question1",
             data: { qArray: indicatedSidesQs, startQ }
         })
     </script>

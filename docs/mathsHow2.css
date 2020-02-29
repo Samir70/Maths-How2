@@ -20,7 +20,7 @@ button:hover {
     background: lightsalmon;
 }
 
-#question {
+.question {
     border: 2px solid lightblue;
     width: auto;
     margin: 10px;

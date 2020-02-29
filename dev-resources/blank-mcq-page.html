@@ -40,7 +40,7 @@
         })
     </script>
 
-    <div id="question">
+    <div id="question1" class="question" >
         <multi-choice 
             v-bind:q-list="qArray"
             v-bind:firstq="startQ"
@@ -56,7 +56,7 @@
     <script>
         var startQ = Math.floor(Math.random()*lableAOHqs.length)
         const askQ = new Vue({
-            el: "#question",
+            el: "#question1",
             data: { qArray: lableAOHqs, startQ }
         })
     </script>

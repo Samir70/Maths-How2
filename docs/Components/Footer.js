@@ -9,6 +9,6 @@ Vue.component('footer-links', {
         <img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="Buy me a coffee">
         buy me a coffee</a>
       <br> All donations appreciated and thanks in advance.</p>
-    <div>
+    </div>
     `
 });

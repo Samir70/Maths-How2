@@ -33,8 +33,8 @@ Vue.component('multi-choice', {
     methods: {
         checkAnswer: function (userAns, qAns) {
             this.answerMessage = userAns === qAns ?
-                "Correct! That is the " + qAns :
-                "Wrong! That is the " + qAns;
+                "Correct! The answer is " + qAns :
+                "Wrong! The answer is " + qAns;
             this.showAnswer = true;
         },
         nextQ: function () {
@@ -49,9 +49,10 @@ Vue.component('multi-choice', {
     },
     template: `
         <div>
-            <div v-if="!showAnswer" >
+            <div v-if="!showAnswer || !showPic" >
                 <h2>{{ chosenQ.qText }}</h2>
                 <button 
+                  v-if="!showAnswer"  
                   v-for="b in chosenQ.options" 
                   v-on:click="checkAnswer(b, chosenQ.answer)">{{b}}</button>
             </div>

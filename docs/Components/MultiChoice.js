@@ -4,6 +4,8 @@ It requires
 -- an array of questions (which the component will ask in random order)
 -- the index of the first question
 -- a boolean stating whether or not to show a picture (the default is false)
+-- response prefixes for correct and wrong answers
+    These will have the correct answer appended to them
 Each question is an object requiring the following properties
 -- qText : a string with the text of a question
 -- answer : a string which represents the answer
@@ -20,7 +22,9 @@ Vue.component('multi-choice', {
     props: {
         qList : Array,
         firstq : Number,
-        showPic : Boolean
+        showPic : Boolean,
+        correctAnsPrefix : {type: String, default:"Correct! The answer is "},
+        wrongAnsPrefix : {type: String, default:"Wrong! The answer is "}
     },
     data: function () {
         return {
@@ -33,8 +37,8 @@ Vue.component('multi-choice', {
     methods: {
         checkAnswer: function (userAns, qAns) {
             this.answerMessage = userAns === qAns ?
-                "Correct! The answer is " + qAns :
-                "Wrong! The answer is " + qAns;
+                this.correctAnsPrefix + qAns :
+                this.wrongAnsPrefix + qAns;
             this.showAnswer = true;
         },
         nextQ: function () {

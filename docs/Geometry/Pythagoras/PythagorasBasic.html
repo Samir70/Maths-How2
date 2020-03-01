@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maths How2 untitled page</title>
+</head>
+
+<body>
+    <header id="header-space">
+        <header-links></header-links>
+    </header>
+    <script src="../../Components/Header.js"></script>
+    <script>
+        var makeHeader = new Vue({
+            el: "#header-space"
+        })
+    </script>
+    <h1>Maths How2 untitled page template</h1>
+    <div id="description">
+        <p>--A quick desription of what this page is about--</p>
+        <div v-if="showInfo" id="quickDefs">
+            <p>Shown if button pressed</p>
+        </div>
+        <br>
+        <button v-on:click='showInfo = !showInfo'>
+            {{showInfo ? hideLesson : showLesson}}
+        </button>
+    </div>
+    <script>
+        var quickTeach = new Vue({
+            el: "#description",
+            data: {
+                showLesson: "Show a quick lesson",
+                hideLesson: "Hide the lesson",
+                showInfo: false
+            }
+        })
+    </script>
+
+    <div id="question1" class="question" >
+        <multi-choice 
+            v-bind:q-list="qArray"
+            v-bind:firstq="startQ"
+            v-bind:show-pic="true" >
+        </multi-choice>
+    </div>
+    <!--  Change the source of questions in the script below -->
+    <script src="triangleQs.js" ></script>
+    <!-- Leave the link to the mutlichoice component -->
+    <script src="../../Components/MultiChoice.js" ></script>
+    <!-- In the script below lableAOHQs is an array of questions. 
+        Change that to the new array of Qs -->
+    <script>
+        var startQ = Math.floor(Math.random()*lableAOHqs.length)
+        const askQ = new Vue({
+            el: "#question1",
+            data: { qArray: lableAOHqs, startQ }
+        })
+    </script>
+    <footer id="footer-space">
+        <footer-links></footer-links>
+    </footer>
+    <script src="../../Components/Footer.js"></script>
+    <script>
+        var makeFooter = new Vue({
+            el: "#footer-space"
+        })
+    </script>
+</body>
+<style>
+    @import '../../mathsHow2.css';
+</style>
+
+</html>

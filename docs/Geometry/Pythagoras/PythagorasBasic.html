@@ -58,6 +58,7 @@
         })
     </script>
 
+    <p>All the answers in the next exercise should be whole numbers.</p>
     <div id="question1" class="question" >
         <p>This triangle is not drawn to scale</p>
         <img v-bind:src="plainABCs[chosenTriangle].pic" 
@@ -80,7 +81,6 @@
         </button>
         <button v-if="showAnswer===3" v-on:click="nextQ">Next Question</button>
     </div>
-    <!--  Change the source of questions in the script below -->
     <script src="pythagTriangles.js" ></script>
     <script>
         var chosenTriangle = 0;

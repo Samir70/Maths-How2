@@ -4,7 +4,7 @@ A repository for webpages which teach maths topics and offer a place to practise
 ## contents
 ### Geometry
 #### Pythagoras
-- [ ] Working with a right angled triangle
+- [x] [Working with a right angled triangle](https://samir70.github.io/Maths-How2/Geometry/Pythagoras/PythagorasBasic.html)
 - [ ] Questions where you need to find/construct the right angled triangle
 
 #### Trigonometry

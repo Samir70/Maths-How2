@@ -18,7 +18,7 @@
         var makeHeader = new Vue({
             el: "#header-space"
         })
-        </script>
+    </script>
     <h1>Trigonometry 02 -- picking a function</h1>
     <!-- Leave the link to the mutlichoice component -->
     <script src="../../Components/MultiChoice.js"></script>
@@ -26,76 +26,87 @@
     <script src="triangleQs.js"></script>
     <div id="description">
         <p>After you have learnt how to label a triangle,
-            you have to choose one the trig functions: Sine, Cosine or Tangent. <br>
+            you have to choose one of the trig functions: Sine, Cosine or Tangent. <br>
             These are the sin, cos and tan buttons on your calculator.<br>
             This page will show you multiple choice questions so you can practise this skill. <br>
             (If you want help with labelling a triangle see the <a href="LableSides.html">previous lesson</a>)
         </p>
-        <div v-if="showInfo" id="quickDefs">
-            <p>Captain Obvious: a triangle has three sides. <br>
-                What you have to remember is that each trig function only talks about two of those sides. <br>
-                Which two sides? That is something you have to memorise, <br> 
-                and we use the made up phrase SOH CAH TOA to help remember.
-            </p>
-            <p>In the <a href="LableSides.html">previous lesson</a>, 
-                you learnt that we call the three sides of the triangle: Opposite, Adjacent and Hypotenuse.<br>
-                Let's pick two of those sides: the Opposite and Hypotenuse.<br>
-                Their initials are OH. Look through SOH CAH TOA.<br>
-                One of those words ends in OH, and begins with S. So those two sides are linked by the Sine function.
-            </p>
-            <p>See if you can work out the rest.<br>
-                For some questions you may have to swap the order of the sides in order to use SOH CAH TOA.
-            </p>
-            <multi-choice class="question"
-                v-bind:q-list="qArray" 
-                v-bind:firstq="startQ" 
-                v-bind:show-pic="false"
-                correct-ans-prefix="Well done! Those sides are connected by "
-                wrong-ans-prefix="Wrong! Those sides are connected by " >
-            </multi-choice>
-        </div>
-        <br>
-        <button v-on:click='showInfo = !showInfo'>
-            {{showInfo ? hideLesson : showLesson}}
-        </button>
+    </div>
+    <hr>
+    <div id="sohcahtoaqs" class="question" >
+        <p>Captain Obvious: a triangle has three sides. <br>
+            What you have to remember is that each trig function only talks about two of those sides. <br>
+            Which two sides? That is something you have to memorise, <br>
+            and we use the made up phrase SOH CAH TOA to help remember.
+        </p>
+        <p>In the <a href="LableSides.html">previous lesson</a>,
+            you learnt that we call the three sides of the triangle: Opposite, Adjacent and Hypotenuse.<br>
+            Let's pick two of those sides: the Opposite and Hypotenuse.<br>
+            Their initials are OH. Look through SOH CAH TOA.<br>
+            One of those words ends in OH, and begins with S. So those two sides are linked by the Sine function.
+        </p>
+        <p>See if you can work out the rest.<br>
+            For some questions you may have to swap the order of the sides in order to use SOH CAH TOA.
+        </p>
+        <multi-choice class="question" 
+            v-bind:q-list="qArray" 
+            v-bind:firstq="startQ" 
+            v-bind:show-pic="false"
+            correct-ans-prefix="Well done! Those sides are connected by "
+            wrong-ans-prefix="Wrong! Those sides are connected by ">
+        </multi-choice>
     </div>
     <script>
         var startQ = 0;
-        var quickTeach = new Vue({
-            el: "#description",
+        var sctQs = new Vue({
+            el: "#sohcahtoaqs",
             data: {
-                showLesson: "Show a quick lesson for using SOH CAH TOA",
-                hideLesson: "Hide the lesson",
-                showInfo: false,
-                qArray: sohcahtoaQs, 
+                qArray: sohcahtoaQs,
                 startQ
             }
         })
     </script>
 
 
-    <p>The above lesson lets you practise using SOH CAH TOA to find the right function if you
-        know which two sides the question asks you two to consider. In the below exercise, you can practise
-        working out for yourself the name of those two sides.
+    <p>The above exercise told you which two sides to consider. <br>
+        In the below exercise, you can practise working out for yourself the name of those two sides.
     </p>
     <div id="question1" class="question">
-        <p>Two sides are indicated in this triangle. One by showing its length,
-             the other is the side you are asked for.</p>
+        <p>Two sides are indicated in this triangle: one by showing its length,
+            the other is the side you are asked to find.</p>
         <multi-choice 
             v-bind:q-list="qArray" 
             v-bind:firstq="startQ" 
             v-bind:show-pic="true"
-            correct-ans-prefix="That's right, the two sides are the "
-            wrong-ans-prefix="Wrong! The two sides are the " >
+            correct-ans-prefix="That's right, the two sides are the " 
+            wrong-ans-prefix="Wrong! The two sides are the ">
         </multi-choice>
     </div>
-    <!-- In the script below lableAOHQs is an array of questions. 
-        Change that to the new array of Qs -->
     <script>
         var startQ = Math.floor(Math.random() * indicatedSidesQs.length)
-        const askQ = new Vue({
+        const askQ1 = new Vue({
             el: "#question1",
             data: { qArray: indicatedSidesQs, startQ }
+        })
+    </script>
+    <p>Finally: do both at the same time.</p>
+    <div id="question2" class="question">
+        <p>Two sides are indicated in this triangle, just as above. <br>
+            Find the trig function which connects them.
+        </p>
+        <multi-choice 
+            v-bind:q-list="qArray" 
+            v-bind:firstq="startQ" 
+            v-bind:show-pic="true"
+            correct-ans-prefix="Correct! The two sides are connected by " 
+            wrong-ans-prefix="Wrong! The two sides are connected by ">
+        </multi-choice>
+    </div>
+    <script>
+        var startQ = Math.floor(Math.random() * sctFromTriQs.length)
+        const askQ2 = new Vue({
+            el: "#question2",
+            data: { qArray: sctFromTriQs, startQ }
         })
     </script>
     <footer id="footer-space">

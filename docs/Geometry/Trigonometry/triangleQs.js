@@ -21,32 +21,37 @@ lableAOHqs.forEach(q=>{
 const sohcahtoaQs = [
     {
         qText: "Which function is associated with the opposite and hypotenuse?",
-        answer: "sin"
+        answer: "SIN"
     },
     {
         qText: "Which function is associated with the opposite and adjacent?",
-        answer: "tan"
+        answer: "TAN"
     },
     {
         qText: "Which function is associated with the adjacent and hypotenuse?",
-        answer: "cos"
+        answer: "COS"
     },
     {
         qText: "Which function is associated with the adjacent and opposite?",
-        answer: "tan"
+        answer: "TAN"
     },
     {
         qText: "Which function is associated with the hypotenuse and adjacent?",
-        answer: "cos"
+        answer: "COS"
     },
     {
         qText: "Which function is associated with the hypotenuse and opposite?",
-        answer: "sin"
+        answer: "SIN"
     }
 ];
-sohcahtoaQs.forEach(q => q.options = ['sin', 'cos', 'tan'])
+sohcahtoaQs.forEach(q => q.options = ['SIN', 'COS', 'TAN'])
 
-indicatedSidesQs = [
+const sidePairs = [
+    OPP+' and '+HYP,
+    ADJ+' and '+HYP,
+    OPP+' and '+ADJ
+]
+const indicatedSidesQs = [
     { pic:"triangles/angleA-givenA-wantO.png", answer:OPP+' and '+ADJ },
     { pic:"triangles/angleA-givenA-wantH.png", answer:ADJ+' and '+HYP },
     { pic:"triangles/angleA-givenO-wantH.png", answer:OPP+' and '+HYP },
@@ -59,14 +64,28 @@ indicatedSidesQs = [
     { pic:"triangles/angleC-givenH-wantA.png", answer:ADJ+' and '+HYP }
 ];
 
-const sidePairs = [
-    OPP+' and '+HYP,
-    ADJ+' and '+HYP,
-    OPP+' and '+ADJ
-]
 indicatedSidesQs.forEach(q => {
     q.qText = "Which two sides are indicated in the triangle?";
     q.alt4Pic = "Triangle ABC with one side length given";
     q.options = sidePairs
+});
+
+const sctFromTriQs = [
+    { pic:"triangles/angleA-givenA-wantO.png", answer:'TAN' },
+    { pic:"triangles/angleA-givenA-wantH.png", answer:'COS' },
+    { pic:"triangles/angleA-givenO-wantH.png", answer:'SIN' },
+    { pic:"triangles/angleA-givenH-wantO.png", answer:'SIN' },
+    { pic:"triangles/angleA-givenH-wantA.png", answer:'COS' },
+    { pic:"triangles/angleC-givenA-wantO.png", answer:'TAN' },
+    { pic:"triangles/angleC-givenA-wantH.png", answer:'COS' },
+    { pic:"triangles/angleC-givenO-wantH.png", answer:'SIN' },
+    { pic:"triangles/angleC-givenH-wantO.png", answer:'SIN' },
+    { pic:"triangles/angleC-givenH-wantA.png", answer:'COS' }
+];
+
+sctFromTriQs.forEach(q => {
+    q.qText = "Which function connects the two indicated sides?";
+    q.alt4Pic = "Triangle ABC with one side length given";
+    q.options = ['SIN', 'COS', 'TAN']
 })
 

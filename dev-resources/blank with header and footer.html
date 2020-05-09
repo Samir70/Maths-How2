@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- This is the dev version of Vue, should change to min version -->
+    <script src="../../VueSource/vue-dev.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header id="header-space">
+        <header-links></header-links>
+    </header>
+    <script src="../../Components/Header.js"></script>
+    <script>
+        var makeHeader = new Vue({
+            el: "#header-space"
+        })
+    </script>
+
+    <h1>Title -- change in head, too</h1>
+    <div id="app"></div>
+
+    <footer id="footer-space">
+        <footer-links></footer-links>
+    </footer>
+    <script src="../../Components/Footer.js"></script>
+    <script>
+        var makeFooter = new Vue({
+            el: "#footer-space"
+        })
+    </script>
+</body>
+</html>

@@ -3,6 +3,12 @@ A repository for webpages which teach maths topics and offer a place to practise
 
 ## contents
 ### Geometry
+#### Angles
+- [x] [Finding angles on a straight line](https://samir70.github.io/Maths-How2/Geometry/Angles/anglesOnAStr8Line.html)
+- [ ] Angles in a triangle
+- [ ] Angles and parallel lines
+ 
+## (older step-by-step to be replaced)
 #### Pythagoras
 - [x] [Working with a right angled triangle](https://samir70.github.io/Maths-How2/Geometry/Pythagoras/PythagorasBasic.html)
 - [ ] Questions where you need to find/construct the right angled triangle

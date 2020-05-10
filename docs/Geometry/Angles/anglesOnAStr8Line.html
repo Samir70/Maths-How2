@@ -39,12 +39,12 @@
             </g>
         </svg>
         <p>One of the angles is given as {{knownAngle}}&deg;. <br /> Find the other angle.</p>
-        <form id="answerblock" v-on:submit.prevent="checkAnswer">
-            <button v-if="showFeedback" v-on:click="nextQ">{{feedbackMessage}}</button>
-            <input v-if="!showFeedback" type="text" placeholder="Your answer"
-                v-model="useranswer" >
+        <form id="answerblock" v-if="!showFeedback" v-on:submit.prevent="checkAnswer">
+            <input type="text" placeholder="Your answer"
+            v-model="useranswer" >
             <button type="submit">Check</button>
         </form>
+        <button type="button" v-if="showFeedback" v-on:click="nextQ">{{feedbackMessage}}</button>
     </div>
     <script>
         const newAngle = () => Math.floor(Math.random() * 50) + 70;

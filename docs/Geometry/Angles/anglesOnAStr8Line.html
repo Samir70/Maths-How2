@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Angles on a Straight Line</title>
 </head>
+
 <body>
     <header id="header-space">
         <header-links></header-links>
@@ -20,9 +22,65 @@
     </script>
 
     <h1>Angles on a Straight Line</h1>
-    <div id="app">
-
+    <div id="question">
+        <p>These two lines meet at a point.</p>
+        <svg viewBox="0,0, 100, 50">
+            <g stroke="red" stroke-width="1">
+                <line id="base" x1="5" y1="45" x2="95" y2="45" />
+                <line id="angled" x1="30" y1="45" x2="70" y2="5" />
+            </g>
+            <path d="M 30 45 L 27 45 A 4 3 0 0 1 33 42 Z" stroke="black" stoke-width="1" fill="blue"
+                fill-opacity="0.5" />
+            <g font-size="4" font-family="sans-serif" fill="black" stroke="none">
+                <text x="5" y="5">(Not drawn to scale)</text>
+                <text x="30" y="45" dx="-8" dy="-4">{{knownAngle}}&deg;</text>
+                <text x="30" y="45" dx="8" dy="-3" v-bind:fill="answerColour">{{useranswer}}&deg;{{questionMark}}</text>
+            </g>
+        </svg>
+        <p>One of the angles is given as {{knownAngle}}&deg;. <br /> Find the other angle.</p>
+        <form id="answerblock" v-on:submit.prevent="checkAnswer">
+            <button v-if="showFeedback" v-on:click="nextQ">{{feedbackMessage}}</button>
+            <input v-if="!showFeedback" type="text" v-model="useranswer" placeholder="Your answer">
+            <button type="submit">Check</button>
+        </form>
     </div>
+    <script>
+        const newAngle = () => Math.floor(Math.random() * 50) + 95;
+        var knownAngle = newAngle();
+        var angleQ = new Vue({
+            el: "#question",
+            data: {
+                knownAngle,
+                useranswer: '',
+                answerColour: "orange",
+                questionMark: '??',
+                showFeedback: false,
+                feedbackMessage: ''
+            },
+            methods: {
+                checkAnswer: function () {
+                    if (this.useranswer == 180 - this.knownAngle) {
+                        this.answerColour = "green";
+                        this.questionMark = '';
+                        this.feedbackMessage = 'Correct! Try another';
+                    } else {
+                        this.answerColour = "red";
+                        this.feedbackMessage = "Wrong! Try again"
+                    }
+                    this.showFeedback = true
+                },
+                nextQ: function () {
+                    if (this.questionMark !== '??') {
+                        this.questionMark = '??';
+                        this.knownAngle = newAngle()
+                    }
+                    this.useranswer = '';
+                    this.answerColour = "orange";
+                    this.showFeedback = false
+                }
+            }
+        })
+    </script>
 
     <footer id="footer-space">
         <footer-links></footer-links>
@@ -36,5 +94,19 @@
 </body>
 <style>
     @import '../../mathsHow2.css';
+
+    svg {
+        height: 60vh;
+        width: auto;
+        max-width: 90vw;
+    }
+
+    @media (orientation: portrait) {
+        svg {
+            height: auto;
+            width: 75vw
+        }
+    }
 </style>
+
 </html>

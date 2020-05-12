@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- This is the dev version of Vue, should change to min version -->
+    <script src="../../VueSource/vue-dev.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angles In A Triangle -- Maths How2</title>
+</head>
+
+<body>
+    <header id="header-space">
+        <header-links></header-links>
+    </header>
+    <script src="../../Components/Header.js"></script>
+    <script>
+        var makeHeader = new Vue({
+            el: "#header-space"
+        })
+    </script>
+
+    <h1>Angles In A Triangle</h1>
+    <div id="triQ" class="question">
+        <svg viewBox="0, 0, 100, 50">
+            <polygon v-bind:points="q.triPoints" stroke="lightblue" v-bind:fill="fillColour" stroke-width="1" />
+            <g font-size="4" font-family="sans-serif" fill="black" stroke="none">
+                <text x="5" y="5">(Not drawn to scale)</text>
+                <text v-bind:x="q.aX" y="45" dx="-1" dy="1" text-anchor="end">A</text>
+                <text v-bind:x="q.aX" y="45" dx="7" dy="-1" text-anchor="start">{{q.angleA}}&deg;</text>
+                <text v-bind:x="q.peakX" v-bind:y="q.peakY" dy="-2" text-anchor="middle">B</text>
+                <text v-bind:x="q.peakX" v-bind:y="q.peakY" dy="6" text-anchor="middle">{{q.angleB}}&deg;</text>
+                <text v-bind:x="q.cX" y="45" dx="1" dy="1" text-anchor="start">C</text>
+                <text v-bind:x="q.cX" y="45" dx="-7" dy="-1" text-anchor="end">{{q.angleC}}&deg;</text>
+            </g>
+        </svg>
+        <p>
+            The angles of triangle ABC are {{q.angleA}}&deg;, {{q.angleB}}&deg; and {{q.angleC}}&deg;
+            <br />Find the unknown value
+        </p>
+        <form v-if="!showFeedback" id="answerblock" v-on:submit.prevent="checkAnswer">
+            <input type="text" placeholder="Your answer" v-model="useranswer">
+            <button type="submit">Check</button>
+        </form>
+        <button v-if="showFeedback" v-on:click="nextQ">{{feedbackMessage}}</button>
+        <p v-if="showhint" id="quickDefs">Angles in a triangle add up to 180&deg;</p>
+        <button v-if="!showhint" v-on:click="showhint=true">Show hint</button>
+        <button v-if="showhint" v-on:click="showhint=false">Hide hint</button>
+    </div>
+    <script>
+        // need to send back an object that includes all the following variables, 
+        // so I can enable nextQ
+        const anglesEtc = () => {
+            var a = Math.floor(Math.random() * 51) + 30 // An angle from 30 to 80
+            var c = Math.floor(Math.random() * 51) + 30 // An angle from 30 to 80
+            var b = 180 - (a + c);
+            var smallestBase = Math.min(a, c);
+            var peakX = 50 + Math.floor((c - a) / 2)
+            var peakY = 30 - Math.floor(smallestBase / 4);
+            var baseOffset = Math.floor(smallestBase / 4)
+            var aX = 10 + baseOffset, cX = 90 - baseOffset;
+            var triPoints = aX + ",45 " + cX + ",45 " + peakX + "," + peakY;
+
+            var pickPoint = Math.floor(Math.random() * 3);
+            var unknownAngle;
+            switch (pickPoint) {
+                case 0: {
+                    unknownAngle = a;
+                    a = '?';
+                    break
+                }
+                case 1: {
+                    unknownAngle = b;
+                    b = '?';
+                    break
+                }
+                default: {
+                    unknownAngle = c;
+                    c = '?'
+                }
+            }
+            return {
+                angleA: a, angleB: b, angleC: c,
+                unknownAngle,
+                peakX, peakY, aX, cX, triPoints
+            }
+        }
+        const triQ = new Vue({
+            el: "#triQ",
+            data: {
+                showhint: false,
+                showFeedback: false,
+                feedbackMessage: '',
+                fillColour: 'none',
+                useranswer: '',
+                userCorrect: false,
+                q: anglesEtc()
+                // angleA, angleB, angleC, unknownAngle
+                // peakX, peakY, triPoints, aX, cX
+            },
+            methods: {
+                checkAnswer: function () {
+                    if (this.useranswer == this.q.unknownAngle) {
+                        this.feedbackMessage = 'Correct! Try another';
+                        this.fillColour = "lime";
+                        this.userCorrect = true;
+                    } else {
+                        this.feedbackMessage = this.useranswer < this.q.unknownAngle ?
+                            'Too small! Try again' : 'Too big! Try again'
+                        this.userCorrect = false;
+                        this.fillColour = "red";
+                    }
+                    this.showFeedback = true;
+                },
+                nextQ: function () {
+                    if (this.userCorrect) {
+                        this.userCorrect = false;
+                        this.useranswer = '';
+                        this.q = anglesEtc()
+                    }
+                    this.showFeedback = false;
+                    this.fillColour = "none"
+                }
+            }
+        })
+    </script>
+
+    <footer id="footer-space">
+        <footer-links></footer-links>
+    </footer>
+    <script src="../../Components/Footer.js"></script>
+    <script>
+        var makeFooter = new Vue({
+            el: "#footer-space"
+        })
+    </script>
+</body>
+<style>
+    @import '../../mathsHow2.css';
+
+    svg {
+        height: 60vh;
+        width: auto;
+        max-width: 90vw;
+    }
+
+    @media (orientation: portrait) {
+        svg {
+            height: auto;
+            width: 75vw
+        }
+    }
+</style>
+
+</html>

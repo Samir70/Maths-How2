@@ -5,7 +5,8 @@ A repository for webpages which teach maths topics and offer a place to practise
 ### Geometry
 #### Angles
 - [x] [Finding angles on a straight line](https://samir70.github.io/Maths-How2/Geometry/Angles/anglesOnAStr8Line.html)
-- [ ] Angles in a triangle
+- [x] [Angles in a triangle](https://samir70.github.io/Maths-How2/Geometry/Angles/anglesInATriangle.html)
+- [x] [Angle outside a triangle](https://samir70.github.io/Maths-How2/Geometry/Angles/angleOutsideTriangle.html)
 - [ ] Angles and parallel lines
  
 ## (older step-by-step to be replaced)

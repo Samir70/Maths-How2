@@ -27,30 +27,34 @@
         <svg viewBox="0,0, 100, 50">
             <g stroke="red" stroke-width="1">
                 <line id="base" x1="5" y1="45" x2="95" y2="45" />
-                <line id="angled" x1="30" y1="45" x2="70" y2="5" />
+                <line id="angled" x1="30" y1="45" v-bind:x2="xOffset" y2="10" />
             </g>
-            <path d="M 30 45 L 27 45 A 4 3 0 0 1 33 42 Z" stroke="black" stoke-width="1" fill="blue"
+            <!-- change how angle is shown -->
+            <path d="M 27 45 A 1 1 0 0 1 33 45 Z" stroke="black" stoke-width="1" fill="none"
                 fill-opacity="0.5" />
             <g font-size="4" font-family="sans-serif" fill="black" stroke="none">
                 <text x="5" y="5">(Not drawn to scale)</text>
-                <text x="30" y="45" dx="-8" dy="-4">{{knownAngle}}&deg;</text>
-                <text x="30" y="45" dx="8" dy="-3" v-bind:fill="answerColour">{{useranswer}}&deg;{{questionMark}}</text>
+                <text x="30" y="45" dx="-9" dy="-3">{{knownAngle}}&deg;</text>
+                <text x="30" y="45" dx="6" dy="-3" v-bind:fill="answerColour">{{useranswer}}{{questionMark}}&deg;</text>
             </g>
         </svg>
         <p>One of the angles is given as {{knownAngle}}&deg;. <br /> Find the other angle.</p>
-        <form id="answerblock" v-on:submit.prevent="checkAnswer">
-            <button v-if="showFeedback" v-on:click="nextQ">{{feedbackMessage}}</button>
-            <input v-if="!showFeedback" type="text" v-model="useranswer" placeholder="Your answer">
+        <form id="answerblock" v-if="!showFeedback" v-on:submit.prevent="checkAnswer">
+            <input type="text" placeholder="Your answer"
+            v-model="useranswer" >
             <button type="submit">Check</button>
         </form>
+        <button type="button" v-if="showFeedback" v-on:click="nextQ">{{feedbackMessage}}</button>
     </div>
     <script>
-        const newAngle = () => Math.floor(Math.random() * 50) + 95;
+        const newAngle = () => Math.floor(Math.random() * 50) + 70;
         var knownAngle = newAngle();
+        var xOffset = 30 + knownAngle - 90;
         var angleQ = new Vue({
             el: "#question",
             data: {
                 knownAngle,
+                xOffset,
                 useranswer: '',
                 answerColour: "orange",
                 questionMark: '??',
@@ -65,14 +69,16 @@
                         this.feedbackMessage = 'Correct! Try another';
                     } else {
                         this.answerColour = "red";
-                        this.feedbackMessage = "Wrong! Try again"
+                        this.feedbackMessage = this.useranswer < (180 - this.knownAngle) ? 
+                            "Too small! Try again" : "Too big! Try again"
                     }
                     this.showFeedback = true
                 },
                 nextQ: function () {
                     if (this.questionMark !== '??') {
                         this.questionMark = '??';
-                        this.knownAngle = newAngle()
+                        this.knownAngle = newAngle();
+                        this.xOffset = 35 + knownAngle - 90;
                     }
                     this.useranswer = '';
                     this.answerColour = "orange";

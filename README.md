@@ -21,4 +21,4 @@ On the other hand: there is nothing but tedium and pointless repition in the "do
 You may take longer, but the result will be that you need to memorise less and can answer a far wider range of questions.
 
 ## Contents
-[Contents page](https://samir70.github.io/Maths-How2/Geometry/Angles/anglesOnAStr8Line.html)
+[Contents page](https://samir70.github.io/Maths-How2/)

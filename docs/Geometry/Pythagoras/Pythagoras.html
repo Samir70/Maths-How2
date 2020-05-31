@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- script src="https://cdn.jsdelivr.net/npm/vue"></script -->
+    <script src="../../VueSource/vue-dev.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCSE Pythagoras 01</title>
+</head>
+
+<body>
+    <header id="header-space">
+        <header-links></header-links>
+    </header>
+    <script src="../../Components/Header.js"></script>
+    <script>
+        var makeHeader = new Vue({
+            el: "#header-space"
+        })
+    </script>
+    <h1>Pythagoras -- using the formula</h1>
+    <div id="pythagQ">
+        <svg viewBox="0, 0, 400, 200">
+            <polygon v-bind:points="q.triPoints" stroke="lightblue" v-bind:fill="fillColour" stroke-width="4" />
+            <polyline v-bind:points="q.rightAngle" stroke="blue" fill="none" stroke-width="3" />
+            <g font-size="12" font-family="sans-serif" fill="black" stroke="none">
+                <!-- Corner name labels ABC - not needed so removed -->
+                <!-- Side lengths -->
+                <text v-bind:x="q.midPoints[1][0]" v-bind:y="q.midPoints[1][1]" dy="-4"
+                    text-anchor="start">{{q.lengths[0]}}</text>
+                <text v-bind:x="q.midPoints[2][0]" v-bind:y="q.midPoints[2][1]" dy="12"
+                    text-anchor="middle">{{q.lengths[1]}}</text>
+                <text v-bind:x="q.midPoints[0][0]" v-bind:y="q.midPoints[0][1]" dx="-2" dy="1"
+                    text-anchor="end">{{q.lengths[2]}}</text>
+                <!-- Angle sizes not needed in this Q so removed-->
+            </g>
+        </svg>
+        <p>Two of the sides of this right-angled triangle are given as: {{q.lengths.filter(x => x!=='?').join(' and ')}}
+        </p>
+        <p>Find the length of the third side</p>
+        <form v-if="!showFeedback" id="answerblock" v-on:submit.prevent="checkAnswer">
+            <input type="text" placeholder="Your answer" v-model="useranswer">
+            <button type="submit">Check</button>
+        </form>
+        <div v-if="showFeedback" id="feedBackBox">
+            <p>{{feedBackMessage}}</p>
+            <button v-if="showFeedback && userCorrect" v-on:click="nextQ">Try another</button>
+            <button v-if="showFeedback && !userCorrect" v-on:click="nextQ">Try again</button>
+        </div>
+        <div v-if="showhint" id="quickDefs">
+            <p>Pythagoras' theorem states that in a right-angled triangle:</p>
+            <img src="./Triangles/PlainABC.png"
+                alt="Right angled triangle with the short sides labeled a, b; and the long side labeled c">
+            <p>a<sup>2</sup> + b<sup>2</sup> = c<sup>2</sup></p>
+            <p>Where a and b are the shorter sides of the triangle and c is the longest side (the hypotenuse)</p>
+            <p>If this isn't enough help for you, then study:</p>
+            <ul>
+                <li>substituting values into a formula</li>
+                <li>how to square a number</li>
+            </ul>
+            <p>(These pages are not written on this site yet).</p>
+        </div>
+        <button v-if="!showhint" v-on:click="showhint=true">Show hint</button>
+        <button v-if="showhint" v-on:click="showhint=false">Hide hint</button>
+    </div>
+    <script src="pythagTriangles.js"></script>
+    <script>
+        // const rndInt = (m, n) => Math.floor(Math.random() * (n - m + 1)) + m;
+        const midPoint = (p, q) => [(p[0] + q[0]) / 2, (p[1] + q[1]) / 2];
+        const arcPoint = (p, q, l = 8) =>
+            [Math.floor(p[0] + (q[0] - p[0]) / l), Math.floor(p[1] - (p[1] - q[1]) / l)];
+        const lineLength = (p, q) => Math.floor(Math.sqrt((p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2) / 20)
+        // find angle oppostie 3rd side
+        const findAngle = (a, b, c) => Math.floor(180 * (Math.acos((a * a + b * b - c * c) / (2 * a * b)) / Math.PI));
+        const pickPoints = () => {
+            var lengths = triples[Math.floor(Math.random() * triples.length)].sort((a, b) => a - b);
+            var [x, y, z] = lengths;
+            var a = [40, 180], b = [], c = [];
+            var orient = Math.floor(Math.random() * 3);
+            var s, e, m;
+            if (orient < 2) {
+                // right angle at bottom left
+                b = [40, 40]; // directly above A, make this the shortest side
+                c = [40 + Math.floor(y * 140 / x), 180];
+                if (c[0] > 360) { c[0] = 360 }
+                lengths = [z, y, x];
+                s = arcPoint(a, c, lineLength(a, c)); e = arcPoint(a, b, lineLength(a, b));
+                m = [s[0], e[1]]
+            }
+            if (orient === 1) {
+                // right angle at top left
+                // x co-ordinate of c already set, only need to change y co-ordinate
+                c[1] = 40;
+                // point a no longer has rightangle
+                lengths = [y, z, x];
+                e = arcPoint(b, a, lineLength(b, a)); s = arcPoint(b, c, lineLength(b, c));
+                m = [s[0], e[1]]
+            }
+            if (orient === 2) {
+                // triangle has hypotenuse as base
+                // height of triangle is 140px
+                // using sim triangles and splitting base into ad, dc
+                // start with (ad, db, ab) being the sides givenas (x, y, z)
+                // then (db, dc, bc) is a sim triangle scales up by y/x
+                // to give (y, y*y/x, z*y/x)
+                b = [40 + x, 180 - y];
+                c = [40 + x + y * y / x, 180];
+                // but this triangle may not fill the space
+                var baseScale = 1, heightScale = 1;
+                if (c[0] < 360) {
+                    baseScale = 320 / (c[0] - 40)
+                }
+                if (b[1] > 40) {
+                    heightScale = 140 / y
+                }
+                var scale = Math.min(baseScale, heightScale);
+                b = [40 + x * scale, 180 - (y * scale)];
+                c = [b[0] + y * y * scale / x, 180]
+                if (c[0] > 360) { c[0] = 360 }
+                if (b[1] < 40) { b[1] = 40 }
+                lengths = [y, z, x];
+                s = arcPoint(b, a, lineLength(b, a)); e = arcPoint(b, c, lineLength(b, c));
+                var vectorBE = e.map((x, i) => x - b[i])
+                m = s.map((x, i) => x + vectorBE[i]);
+            }
+            var points = [a, b, c];
+            var rightAngle = [s, m, e].map(x => x.join(',')).join(" ");
+            var pickSide = Math.floor(Math.random() * 3);
+            var unknown = lengths[pickSide];
+            var lookingForlongest = unknown === z;
+            lengths[pickSide] = '?'
+
+            return {
+                points, lengths, unknown, lookingForlongest,
+                midPoints: [midPoint(a, b), midPoint(b, c), midPoint(a, c)],
+                rightAngle,
+                triPoints: points.map(x => x.join(',')).join(' ')
+            }
+        }
+
+        const pythagQ = new Vue({
+            el: "#pythagQ",
+            data: {
+                showhint: false,
+                q: pickPoints(),
+                fillColour: 'white',
+                useranswer: '',
+                userCorrect: false,
+                showFeedback: false,
+                feedBackMessage: 'feedback not set'
+            },
+            methods: {
+                checkAnswer: function () {
+                    if (this.useranswer == this.q.unknown) {
+                        this.feedBackMessage = "Correct! Well done";
+                        this.fillColour = "lime"
+                        this.showFeedback = true;
+                        this.userCorrect = true;
+                    } else {
+                        this.feedBackMessage = '';
+                        var given = this.q.lengths.filter(x => x !== '?')
+                        if (!this.q.lookingForlongest) {
+                            var wrong = Math.sqrt(given.reduce((acc, val) => acc + val * val, 0));
+                            if (Math.abs(this.useranswer - wrong) < 1) {
+                                this.feedBackMessage = "Did you add the squares? Did you notice that you are looking for one of the shorter sides?"
+                            }
+                            if (this.useranswer == Math.abs(given[0] - given[1])) {
+                                this.feedBackMessage = "Did you remember to square the given sides? Have a look at Pythagoras' formula in the hint."
+                            }
+                        } else {
+                            if (this.useranswer == given[0] + given[1]) {
+                                this.feedBackMessage = "Did you remember to square the given sides? Have a look at Pythagoras' formula in the hint."
+                            }
+                        }
+                        if (this.useranswer == this.q.unknown ** 2) {
+                            this.feedBackMessage = "Did you remember to square root?"
+                        }
+                        if (this.feedBackMessage === '') {
+                            this.feedBackMessage = "That is wrong. Check your working. If you are stuck: look at Pythagoras' formula in the hint."
+                        }
+                        this.fillColour = "red";
+                        this.userCorrect = false;
+                        this.showFeedback = true;
+                    }
+                },
+                nextQ: function () {
+                    if (this.userCorrect) {
+                        this.q = pickPoints();
+                        this.userCorrect = false;
+                        this.useranswer = ''
+                    }
+                    this.fillColour = "white";
+                    this.showFeedback = false;
+                }
+            }
+        })
+    </script>
+
+    <footer id="footer-space">
+        <footer-links></footer-links>
+    </footer>
+    <script src="../../Components/Footer.js"></script>
+    <script>
+        var makeFooter = new Vue({
+            el: "#footer-space"
+        })
+    </script>
+</body>
+<style>
+    @import '../../mathsHow2.css';
+
+    svg {
+        height: 60vh;
+        width: auto;
+        max-width: 90vw;
+    }
+
+    @media (orientation: portrait) {
+        svg {
+            height: auto;
+            width: 75vw
+        }
+    }
+</style>
+
+</html>

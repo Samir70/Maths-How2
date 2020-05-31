@@ -145,7 +145,7 @@
             },
             methods: {
                 checkAnswer: function () {
-                    var stripped = this.useranswer.replace(/\s+/g, '');
+                    var stripped = this.useranswer.replace(/\s+/g, '').toLowerCase();
                     if (stripped === 'x+y' || stripped === 'y+x') {
                         this.feedbackMessage = 'Try again (but the answer will be the same!)';
                         this.fillColour = "lime";

@@ -2,6 +2,10 @@
 A repository for webpages which teach maths topics and offer a place to practise skills
 
 ## contents
+### Number
+#### Basic Arithmetic
+- [x] [Adding two numbers](https://samir70.github.io/Maths-How2/Number/basicArithmetic/addingNumbers.html)
+
 ### Geometry
 #### Angles
 - [x] [Finding angles on a straight line](https://samir70.github.io/Maths-How2/Geometry/Angles/anglesOnAStr8Line.html)

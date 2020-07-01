@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- This is the dev version of Vue, should change to min version -->
+    <script src="../../VueSource/vue-dev.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adding Numbers</title>
+</head>
+<body>
+    <header id="header-space">
+        <header-links></header-links>
+    </header>
+    <script src="../../Components/Header.js"></script>
+    <script>
+        var makeHeader = new Vue({
+            el: "#header-space"
+        })
+    </script>
+
+    <h1>Adding Numbers</h1>
+    <div id="numq">
+    <p>Obviously an important topic. Find your level. Then get a bit of practice</p>
+    <p><strong>Current Level</strong>: {{levels[level].name}} -- {{levels[level].description}}</p>
+    <button v-on:click="easier">Easier questions</button>
+    <button v-on:click="harder">Harder questions</button>
+    <button v-on:click="refresh">New question</button>
+
+        <adding-nums class="question" v-for="n in 4" v-bind:level="level" v-bind:key="n+counter"></adding-nums>
+    </div>
+
+    <script src="addingNums.js"></script>
+    <script>
+        var numQ = new Vue({
+            el:'#numq',
+            data: {
+                level: 0,
+                levels,
+                counter:0
+            },
+            methods: {
+                easier: function () {
+                    if (this.level > 0) {this.level--}
+                },
+                harder: function () {
+                    if (this.level < this.levels.length-1) {this.level++}
+                }, 
+                refresh: function () {
+                    this.counter++
+                }
+            }
+        })
+    </script>
+
+    <footer id="footer-space">
+        <footer-links></footer-links>
+    </footer>
+    <script src="../../Components/Footer.js"></script>
+    <script>
+        var makeFooter = new Vue({
+            el: "#footer-space"
+        })
+    </script>
+</body>
+<style>
+    @import '../../mathsHow2.css';
+</style>
+</html>

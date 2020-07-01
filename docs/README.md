@@ -10,11 +10,11 @@ A repository for webpages which teach maths topics and offer a place to practise
 - [x] [External Angle Theorem (with algebra)](https://samir70.github.io/Maths-How2/Geometry/Angles/externalAngleAlgebra.html) 
 - [ ] Angles and parallel lines
  
-## (older step-by-step to be replaced)
 #### Pythagoras
-- [x] [Working with a right angled triangle](https://samir70.github.io/Maths-How2/Geometry/Pythagoras/PythagorasBasic.html)
+- [x] [Working with a right angled triangle](https://samir70.github.io/Maths-How2/Geometry/Pythagoras/Pythagoras.html)
 - [ ] Questions where you need to find/construct the right angled triangle
 
+## (older step-by-step to be replaced)
 #### Trigonometry
 - [x] [Labeling the sides of a right-angled triangle](https://samir70.github.io/Maths-How2/Geometry/Trigonometry/LableSides.html)
 - [x] [Choosing the right formula for the question](https://samir70.github.io/Maths-How2/Geometry/Trigonometry/SelectFunction.html)

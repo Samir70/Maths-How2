@@ -5,6 +5,8 @@ A repository for webpages which teach maths topics and offer a place to practise
 ### Number
 #### Basic Arithmetic
 - [x] [Adding two numbers](https://samir70.github.io/Maths-How2/Number/basicArithmetic/addingNumbers.html)
+#### Exam questons
+- [x] [The wages of Maths World](https://samir70.github.io/Maths-How2/Number/examQs/wagesOfMathWorld.html) Starts with the original exam queston, and has easier questions with necessary maths.
 
 ### Geometry
 #### Angles

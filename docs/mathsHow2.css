@@ -3,6 +3,12 @@ body {
     width: 95vw;
     margin: auto;
 }
+ul {
+    list-style-position: inside; 
+} 
+li {
+    font-size: 20px;
+}
 
 button {
     background: lightblue;

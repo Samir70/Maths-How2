@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- This is the dev version of Vue, should change to min version -->
+    <script src="../../VueSource/vue-dev.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The wages of mathWorld</title>
+</head>
+<body>
+    
+
+    <h1>Wages of Math World</h1>
+    <div id="numq">
+    <p>Obviously an important topic. Find your level. Then get a bit of practice</p>
+    <p><strong>Current Level</strong>: {{levels[level].name}} -- {{levels[level].description}}</p>
+    <button v-on:click="easier">Easier questions</button>
+    <button v-on:click="harder">Harder questions</button>
+    <button v-on:click="refresh">New question</button>
+
+        <adding-nums class="question" v-for="n in numOfQs" v-bind:level="level" v-bind:key="n+counter"></adding-nums>
+    <button v-on:click="fewerQs">fewer qs</button>
+    <button v-on:click="moreQs">more qs</button>
+    </div>
+    <p>Source: eduqas non-calculator paper from May 2019, Q17</p>
+    <script>
+       const levels = [
+    		{ name: 'bronze-1', description: 'converting fractions to percentages' },
+    		{ name: 'bronze-2', description: 'finding the percentage left'},
+    		{ name: 'silver-2', description: 'finding full wages'},
+    		{ name: 'Gold - 1', description: 'Mixture of lots of topics'},
+    		{ name: 'Gold - 2', description: 'Needs careful reading'},
+    		{ name: 'Gold - 3', description: 'Final twist'}
+    		// should decimals be done here?
+       ];
+	const randInt = n => Math.floor(Math.random() * n) + 1
+	const fracs = [[1, 2], [1, 4], [1, 4], [1, 4], [1, 4], [1, 5], [1, 5], [1, 5], [1, 5], [1, 5], [2, 5], [1, 10], [1, 10], [1, 10]]
+	const rndFrac = () => fracs[randInt(fracs.length)-1]
+	const rndLSMult = () => (randInt(26)+9)/100; // 0.1 ... 0.35 
+	const moneyNotation = val => {
+	    let pence = val * 100
+	    if (pence % 10) {return '£'+val}
+	    if (pence % 100) {return '£'+val+'0'}
+	    return '£'+val;
+	}
+	const moneyVal = str => str[0] === '£' ? Number(str.slice(1)) : (Number(str) || 0)
+
+
+	Vue.component('adding-nums', {
+	    props: {
+        	'level': Number
+	    },
+	    data: function () {
+	        return {
+	            ans: 12,
+        	    userAns: '£',
+	            feedback: 'Right or Wrong',
+        	    showFeedback: false,
+	            userCorrect: false
+        	}
+	    },
+	    computed: {
+        	qText: function () {
+	            let [n, d] = rndFrac();
+		    let fracSaved = n + '/' + d; // how much is saved
+		    let leftOverPercent = 100*(1 - n/d);
+		    let forLStyle = Math.floor(rndLSMult() * leftOverPercent)
+		    let forLiving = leftOverPercent - forLStyle;	
+		    let details = [], q = '', feedback;
+		    let amountSaved = (randInt(10) + 4) * 10; // 40..130 in tens
+		    let wage = amountSaved * d / n; // n is 1 or 2, amount saved is always even
+        	    switch (this.level) {
+                	case 0: { // convert fraction into percentage
+			    details.push('saves ' + fracSaved + ' of his wages');
+			    q = 'What is this fraction as a percentage? ';
+			    this.ans = (100 * n / d)+''
+			    feedback = fracSaved+' is '+ this.ans + '%';
+			    this.userAns = '';				    
+			    break
+			}	                
+        	        case 1: { // finding percentage left
+			    details.push('saves ' + fracSaved, 'spends ' + forLiving + '% of his wage on living expenses', 'spends the rest on social life');
+			    q = 'What percentage of his wage does he spend on his social life? ';
+			    this.ans = forLStyle+''
+			    feedback = ' He spends '+forLStyle+'% on his social life';	
+			    this.userAns = '';		    
+			    break
+			}
+	                case 2: { // finding full wage
+			    details.push('saves ' + fracSaved);
+			    q = 'One week, Hue saves £'+ amountSaved + ' How much was his full wage? ';
+			    this.ans = moneyNotation(wage)
+			    feedback = ' The £' + amountSaved +' he saved is '+fracSaved+' of his full wage £'+wage;			    
+			    break
+			}
+        	        case 3: { 
+			    details.push('saves ' + fracSaved, 'spends ' + forLiving + '% of his wage on living expenses', 'spends the rest on social life');
+			    q = 'One week, Hue saves £'+ amountSaved + ' How much does he spend on his social life? ';
+			    this.ans = moneyNotation(forLStyle * wage / 100)
+			    feedback = 'If Huw saves £' + amountSaved +' he will spend '+this.ans+' on his social life';
+			    break
+			}
+			case 4: { // using ??% of what is left
+			    let forLiving2 = (randInt(4) + 5) * 10; // 60% to 90%
+			    details.push('saves ' + fracSaved, 'spends ' + forLiving2 + '% OF WHAT IS LEFT on living expenses', 'spends the rest on social life');
+			    q = 'One week, Hue saves £'+ amountSaved + ' How much does he spend on his social life? ';
+			    this.ans = moneyNotation( (100-forLiving2) * (wage - amountSaved) / 100 )
+			    feedback = 'If Huw saves £' + amountSaved +' he earned £'+wage+' in total. He spent '+this.ans+' on his social life';
+			    break
+			}
+			default: { // find % of original earnings
+			    this.userAns = '';	
+			    let forLiving2 = (randInt(4) + 5) * 10; // 60% to 90%
+			    details.push('saves ' + fracSaved, 'spends ' + forLiving2 + '% OF WHAT IS LEFT on living expenses', 'spends the rest on social life');
+			    q = 'One week, Hue saves £'+ amountSaved + ' What percentage of his wage does he spend on his social life? ';
+			    let forSL = (100-forLiving2) * (wage - amountSaved) / 100
+			    this.ans = (100*forSL / wage) + ''
+			    feedback = 'If Huw saves £' + amountSaved +' he earned £'+wage+' in total. He spent '+forSL+ ' on his social life, which is '+this.ans+'% of £'+wage;
+			}
+	            }
+console.log(this.ans)
+	            return {setup: 'Huw gets a weekly wage and, every week Huw', details, q, feedback}
+        	}
+	    },
+	    methods: {
+	        checkAnswer: function () {
+        	    var n = this.userAns;
+	            if (n === this.ans || (n[0] === '£' && n.slice(-3) === '.00') ) {
+	                this.feedback = 'Correct! ' + this.qText.feedback;
+        	        this.userCorrect = true
+	            } else {
+        	        this.feedback = 'Wrong! ';
+			let extra='Can you solve easier versions of this question?';
+			if (moneyVal(n) === moneyVal(this.ans)) {extra = 'Try using money notation!'}
+                	this.feedback += extra
+            	}
+	            this.showFeedback = true
+        	},
+	        tryAgain: function () {
+        	    this.showFeedback = false;
+	        }
+	    },
+	    template: `
+        	<div>		
+		<p>{{qText.setup}}</p>
+		<ul>
+		   <li v-for="d in qText.details" v-bind:key="d">{{d}}</li>
+		</ul>
+           	 <form v-if="!showFeedback" id="answerblock" v-on:submit.prevent="checkAnswer">
+                	<label>{{qText.q}}<input v-model="userAns" /></label>
+	                <button type="submit" >Check Answer</button>
+        	    </form>
+	            <div v-if="showFeedback">
+        	        <label>{{feedback}}</label>
+                	<button v-if="showFeedback && !userCorrect" v-on:click="tryAgain">Try again</button>
+	            </div>
+	        </div>
+	    `
+	})
+    </script>
+    <script>
+        var numQ = new Vue({
+            el:'#numq',
+            data: {
+                level: levels.length - 1,
+                levels,
+                counter:0,
+		numOfQs: 1
+            },
+            methods: {
+                easier: function () {
+                    if (this.level > 0) {this.level--; this.counter += this.numOfQs}
+                },
+                harder: function () {
+                    if (this.level < this.levels.length-1) {this.level++; this.counter += this.numOfQs}
+                }, 
+                refresh: function () {
+                    this.counter++
+                },
+		moreQs: function () {
+                    this.numOfQs += this.numOfQs < 4 ? 1 : 0
+                },
+		fewerQs: function () {
+                    this.numOfQs -= this.numOfQs > 1 ? 1 : 0
+                },
+            }
+        })
+    </script>
+
+    
+</body>
+<style>
+    @import '../../mathsHow2.css';
+</style>
+</html>

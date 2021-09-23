@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- This is the dev version of Vue, should change to min version -->
+    <script src="../../VueSource/vue-dev.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HCF of 3 numbers</title>
+</head>
+<body>
+    <header id="header-space">
+        <header-links></header-links>
+    </header>
+    <script src="../../Components/Header.js"></script>
+    <script>
+        var makeHeader = new Vue({
+            el: "#header-space"
+        })
+    </script>
+
+    <h1>Using common factors to find Highest Common Factor</h1>
+    <div id="hcf">
+        <p>What is the HCF of {{nums.join(', ')}}</p>
+    </div>
+    <script>
+        const coprimeTriples = [
+            [1,4,5], [2, 3, 5], [3, 4, 5], [3, 4, 7]
+        ];
+        const hcfQ = () => {
+            let r = Math.floor(Math.random() * coprimeTriples.length)
+            let nums = coprimeTriples[r]
+            for (let i = 0; i < 2; i++) {
+                let m = Math.floor(Math.random() * 10) + 2 // [2..11]
+                nums = nums.map(n => n*m)
+            }
+            console.log(nums)
+            return nums
+        }
+        var app = new Vue({
+            el: '#hcf',
+            data: {
+                // dummy: [1,2,3]
+            },
+            computed: {
+                nums: function () {return hcfQ()}
+            }
+        })
+    </script>
+
+    <footer id="footer-space">
+        <footer-links></footer-links>
+    </footer>
+    <script src="../../Components/Footer.js"></script>
+    <script>
+        var makeFooter = new Vue({
+            el: "#footer-space"
+        })
+    </script>
+</body>
+<style>
+    @import '../../mathsHow2.css';
+</style>
+</html>

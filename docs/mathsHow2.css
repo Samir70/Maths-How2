@@ -58,3 +58,16 @@ button:hover {
     border: 2px solid darkblue;
     background: lightblue;
 }
+
+table {
+    display: block;
+    margin: auto;
+    width: max-content;
+    border-spacing: 0;
+}
+
+thead, td {
+    border: 1px solid;
+    padding: 0px 5px;
+    font-size: 25px;
+}

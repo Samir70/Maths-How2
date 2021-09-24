@@ -21,7 +21,26 @@
 
     <h1>Using common factors to find Highest Common Factor</h1>
     <div id="hcf">
-        <p>What is the HCF of {{nums.join(', ')}}</p>
+        <p>What is the HCF of {{curQ.nums.join(', ')}}?</p>
+        <div v-if="showFeedback">
+            <p>{{feedback}}</p>
+            <button v-on:click="nextQ" >Another Question</button>
+        </div>
+        <div v-else>
+            <input type="text" placeholder="answer" v-model:value="userAns" />
+            <button v-on:click="checkAns">Check Answer</button>
+            <p>Can't find the HCF in one go? <br/> Find any common factor.</p>
+            <p>Think of a number that divides all three of {{curQ.nums.join(', ')}}. <br/> 
+            Put it in the table.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <td><input type="text" placeholder="CF" v-model:value="userCF" v-on:change="updateTable" /></td>
+                        <td v-for="n of curQ.nums">{{n}}</td>
+                    </tr>
+                </thead>
+            </table>
+        </div>
     </div>
     <script>
         const coprimeTriples = [
@@ -29,21 +48,38 @@
         ];
         const hcfQ = () => {
             let r = Math.floor(Math.random() * coprimeTriples.length)
-            let nums = coprimeTriples[r]
+            let nums = coprimeTriples[r], hcf = 1
             for (let i = 0; i < 2; i++) {
                 let m = Math.floor(Math.random() * 10) + 2 // [2..11]
-                nums = nums.map(n => n*m)
+                nums = nums.map(n => n*m);
+                hcf *= m
             }
-            console.log(nums)
-            return nums
+            console.log({nums, hcf})
+            return {nums, hcf}
         }
         var app = new Vue({
             el: '#hcf',
             data: {
-                // dummy: [1,2,3]
+                curQ: hcfQ(),
+                userAns: '', userCF: '',
+                feedback: 'Answer not checked yet!',
+                showFeedback: false
             },
-            computed: {
-                nums: function () {return hcfQ()}
+            methods: {
+                checkAns: function() {
+                    let ans = Number(this.userAns)
+                    if (ans === this.curQ.hcf) {
+                        this.feedback = `Correct! HCF(${this.curQ.nums.join(', ')}) is ${this.userAns}`
+                    } else {
+                        this.feedback = `Wrong! HCF(${this.curQ.nums.join(', ')}) is ${this.curQ.hcf}`
+                    }
+                    this.showFeedback = true
+                },
+                nextQ: function() {
+                    this.curQ = hcfQ();
+                    this.userAns = ''
+                    this.showFeedback = false
+                }
             }
         })
     </script>

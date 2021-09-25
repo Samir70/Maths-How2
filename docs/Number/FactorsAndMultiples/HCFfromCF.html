@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HCF of 3 numbers</title>
 </head>
+
 <body>
     <header id="header-space">
         <header-links></header-links>
@@ -24,49 +26,57 @@
         <p>What is the HCF of {{curQ.nums.join(', ')}}?</p>
         <div v-if="showFeedback">
             <p>{{feedback}}</p>
-            <button v-on:click="nextQ" >Another Question</button>
+            <p v-if="prodOfCFs === curQ.hcf">You found the common factors {{comFacs.join(', ')}} <br />
+                Notice that {{comFacs.join(' x ')}} = {{prodOfCFs}}</p>
+            <button v-on:click="nextQ">Another Question</button>
         </div>
         <div v-else>
             <input type="text" placeholder="answer" v-model:value="userAns" />
             <button v-on:click="checkAns">Check Answer</button>
-            <p>Can't find the HCF in one go? <br/> Find any common factor.</p>
-            <p>Think of a number that divides all three of {{curQ.nums.join(', ')}}. <br/> 
-            Put it in the table.</p>
-            <table>
-                <thead>
-                    <tr>
-                        <td><input type="text" placeholder="CF" v-model:value="userCF" v-on:change="updateTable" /></td>
-                        <td v-for="n of curQ.nums">{{n}}</td>
-                    </tr>
-                </thead>
-            </table>
+            <p>Can't find the HCF in one go? <br /> Find any common factor.</p>
+            <p>Think of a number that divides all three of {{curQ.nums.join(', ')}}. </p>
+            <p v-if="comFacs.length > 0">After dividing by {{comFacs.join(' and then ')}} <br />
+                the numbers in the question become {{curQ.nums.map(n => n/prodOfCFs).join(', ')}} <br />
+                Is there a number that divides all of those?</p>
+            <div v-if="showCFfeedback">
+                <p>{{cfFeedback}}</p>
+                <button v-on:click="tryAgain">Try again</button>
+            </div>
+            <div v-else>
+                <input type="text" v-model:value="nextCF" v-bind:placeholder="cfPlaceholder" />
+                <button v-on:click="checkFactor">Check factor</button>
+                <p v-if="prodOfCFs === curQ.hcf">Try to answer the original question. </p>
+            </div>
         </div>
     </div>
     <script>
         const coprimeTriples = [
-            [1,4,5], [2, 3, 5], [3, 4, 5], [3, 4, 7]
+            [1, 4, 5],
+            [2, 3, 5], [2, 3, 7], [2, 5, 7],
+            [3, 4, 5], [3, 4, 7], [3, 5, 7], [3, 5, 8], [3, 7, 8]
         ];
         const hcfQ = () => {
             let r = Math.floor(Math.random() * coprimeTriples.length)
             let nums = coprimeTriples[r], hcf = 1
             for (let i = 0; i < 2; i++) {
                 let m = Math.floor(Math.random() * 10) + 2 // [2..11]
-                nums = nums.map(n => n*m);
+                nums = nums.map(n => n * m);
                 hcf *= m
             }
-            console.log({nums, hcf})
-            return {nums, hcf}
+            // console.log({ nums, hcf })
+            return { nums, hcf }
         }
         var app = new Vue({
             el: '#hcf',
             data: {
                 curQ: hcfQ(),
-                userAns: '', userCF: '',
+                userAns: '', comFacs: [], prodOfCFs: 1, nextCF: '',
                 feedback: 'Answer not checked yet!',
-                showFeedback: false
+                cfFeedback: 'Not checked a CF yet', cfPlaceholder: 'Common Factor',
+                showFeedback: false, showCFfeedback: false
             },
             methods: {
-                checkAns: function() {
+                checkAns: function () {
                     let ans = Number(this.userAns)
                     if (ans === this.curQ.hcf) {
                         this.feedback = `Correct! HCF(${this.curQ.nums.join(', ')}) is ${this.userAns}`
@@ -75,10 +85,41 @@
                     }
                     this.showFeedback = true
                 },
-                nextQ: function() {
+                checkFactor: function () {
+                    let cf = Number(this.nextCF);
+                    if (Math.floor(cf) !== cf) {
+                        this.cfPlaceholder = 'decimals are a poor choice';
+                        this.nextCF = ''
+                        return
+                    }
+                    if (cf < 2) {
+                        this.cfPlaceholder = cf + ' is not a good choice';
+                        this.nextCF = ''
+                        return
+                    }
+                    let notMultiple = this.curQ.nums.find(n => n % (cf * this.prodOfCFs) > 0)
+                    if (notMultiple === undefined) {
+                        // nextCf is a factor of all number
+                        this.comFacs.push(cf);
+                        this.prodOfCFs *= cf;
+                        this.nextCF = ''
+                        this.cfPlaceholder = 'next common factor'
+                    } else {
+                        this.showCFfeedback = true;
+                        this.cfFeedback = `${cf} is not a factor of ${notMultiple / this.prodOfCFs}`
+                    }
+                },
+                nextQ: function () {
                     this.curQ = hcfQ();
-                    this.userAns = ''
+                    this.userAns = '';
+                    this.comFacs = [];
+                    this.prodOfCFs = 1;
+                    this.cfFeedback = 'Common Factor'
                     this.showFeedback = false
+                },
+                tryAgain: function () {
+                    this.nextCF = '';
+                    this.showCFfeedback = false;
                 }
             }
         })
@@ -97,4 +138,5 @@
 <style>
     @import '../../mathsHow2.css';
 </style>
+
 </html>

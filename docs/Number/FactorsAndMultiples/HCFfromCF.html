@@ -99,7 +99,7 @@
                 checkFactor: function () {
                     let cf = Number(this.nextCF);
                     if (Math.floor(cf) !== cf) {
-                        this.cfPlaceholder = 'decimals are a poor choice';
+                        this.cfPlaceholder = 'pick a whole number';
                         this.nextCF = ''
                         return
                     }
